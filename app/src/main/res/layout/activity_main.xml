@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/To_Form"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#C3431B"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+
+    <Button
+        android:id="@+id/principalPage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="ToPrincipalPage"
+        android:text="Principal Page" />
+
+    <TextView
+        android:id="@+id/user_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="ToLogout"
+        android:text="@string/logout" />
+
+    <Button
+        android:id="@+id/bt_manga_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="ToMangaPage"
+        android:text="Manga Page" />
+
+    <Button
+        android:id="@+id/bt_favoris"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="ToFavorisPage"
+        android:text="Favoris Page" />
+
+    <Button
+        android:id="@+id/bt_map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="ToMapPage"
+        android:text="Map Page" />
+
+    <Button
+        android:id="@+id/bt_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="ToSend"
+        android:text="Send" />
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="inesert name"
+        />
+
+
+</LinearLayout>

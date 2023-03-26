@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "250299223797",
+    "project_id": "mangas-a1043",
+    "storage_bucket": "mangas-a1043.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:250299223797:android:fcae9b17ad7a9e4bd7bfbc",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "250299223797-hn93l9ij7b6k3023rr2jbu2ssajsdsem.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRvJyPzP7FCr9MXo-xWAq7Ekx_YKNMIzg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "250299223797-hn93l9ij7b6k3023rr2jbu2ssajsdsem.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
