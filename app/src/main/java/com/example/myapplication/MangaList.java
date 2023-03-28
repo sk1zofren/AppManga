@@ -101,15 +101,12 @@ public class MangaList extends AppCompatActivity {
         });
 
         builder.setNegativeButton("Add Fav", new DialogInterface.OnClickListener() {
+
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                 favMangaList.add(manga);
+                 favMangaList.add(manga) ;
 
-                User user2 = new User();
 
-                user2.setArrayList(favMangaList);
-                UserRef = FirebaseDatabase.getInstance("https://mangas-a1043-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child(String.valueOf(mAuth.getCurrentUser().getUid()));
-                UserRef.push().setValue(user2);
 
 
                 System.out.println(favMangaList.size());
@@ -117,6 +114,8 @@ public class MangaList extends AppCompatActivity {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
+
+
     }
 
     private class RetrieveMangaListTask extends AsyncTask<Void, Void, String> {
@@ -209,5 +208,13 @@ public class MangaList extends AppCompatActivity {
             }
         }
 
+    }
+
+    public void ToFavoris(View view){
+        User user2 = new User();
+
+        user2.setArrayList(favMangaList);
+        UserRef = FirebaseDatabase.getInstance("https://mangas-a1043.europe-west1.firebasedatabase.app/").getReference().child("listFavManga");
+        UserRef.push().setValue(user2);
     }
 }
