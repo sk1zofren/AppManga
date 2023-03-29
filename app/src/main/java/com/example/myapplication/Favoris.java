@@ -29,7 +29,11 @@ public class Favoris extends AppCompatActivity {
 
     public String title;
 
+    public String imageUrl;
+
     public ListView titleManga;
+
+
 
     public TextView titleManga2;
 
@@ -43,6 +47,7 @@ public class Favoris extends AppCompatActivity {
 
         // Créer une nouvelle ArrayList pour stocker les mangas favoris
         favMangaList = new ArrayList<>();
+
 
         // Créer un nouvel adaptateur pour le ListView
         // Créer un nouvel adaptateur pour le ListView
@@ -71,23 +76,31 @@ public class Favoris extends AppCompatActivity {
                     // Créer un nouvel objet Manga à partir des données récupérées
                     int startIndex = mangaData.get("arrayListe").toString().indexOf("title="); // Trouver l'indice de début de la sous-chaîne
                     int endIndex = mangaData.get("arrayListe").toString().indexOf("}", startIndex); // Trouver l'indice de fin de la sous-chaîne
-
                     title = mangaData.get("arrayListe").toString().substring(startIndex+6, endIndex);
                     // Extraire le titre du manga de la chaîne de caractères stockée dans la base de données
 
+                    String target = "imageUrl";
+                    int startIndex2 = mangaData.get("arrayListe").toString().indexOf(target) + target.length();
+                    int endIndex2 = mangaData.get("arrayListe").toString().indexOf(",", startIndex2);
+                    imageUrl = mangaData.get("arrayListe").toString().substring(startIndex2+1, endIndex2);
 
 
                     // Créer un nouvel objet Manga à partir des données récupérées
                     Manga manga = new Manga(title);
 
+                    manga.setImageUrl(imageUrl); // Assigner l'URL de l'image à l'objet Manga
+
+
+
 
                     // Ajouter l'objet Manga à la liste
                     favMangaList.add(manga);
 
+
                     // Notifier l'adaptateur que les données ont changé
                     adapter.add(manga);;
 
-                } else {
+                } else{
                     Log.e("Favoris", "Les données ne sont pas stockées sous forme de HashMap");
                 }
             }

@@ -5,7 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -30,6 +33,14 @@ public class MangaAdapter extends ArrayAdapter<Manga> {
         // Mettre à jour la vue avec les données de l'objet Manga
         TextView titleTextView = convertView.findViewById(R.id.title_text_view);
         titleTextView.setText(manga.getTitle());
+
+        // Récupérer l'URL de l'image pour le manga actuel
+        String imageUrl = getItem(position).getImageUrl();
+
+        // Charger l'image à partir de l'URL et l'afficher dans l'ImageView
+        ImageView imageView = convertView.findViewById(R.id.image_view);
+        Picasso.get().load(imageUrl).into(imageView);
+
 
         return convertView;
     }

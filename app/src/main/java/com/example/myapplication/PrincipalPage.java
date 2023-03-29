@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 
 public class PrincipalPage extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
