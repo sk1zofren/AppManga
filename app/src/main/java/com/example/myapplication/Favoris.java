@@ -35,7 +35,7 @@ public class Favoris extends AppCompatActivity {
 
 
 
-    public TextView titleManga2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +49,7 @@ public class Favoris extends AppCompatActivity {
         favMangaList = new ArrayList<>();
 
 
-        // Créer un nouvel adaptateur pour le ListView
+
         // Créer un nouvel adaptateur pour le ListView
         adapter = new MangaAdapter(this, R.layout.list_item_manga, favMangaList);
 

@@ -7,26 +7,33 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
+        android:orientation="horizontal">
 
 
 
         <LinearLayout
             android:id="@+id/col1"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="@color/colorPrimary">
+
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
                 android:text="Colonne 1"
-                android:textColor="#2E0D69"
-                />
+                android:textColor="#2E0D69" />
+
+            <ImageView
+                android:id="@+id/image_view"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/ic_launcher_background"
+                android:scaleType="centerCrop" />
 
             <LinearLayout
                 android:id="@+id/col1_container"
@@ -39,13 +46,10 @@
         </LinearLayout>
 
 
-
-
-
         <LinearLayout
             android:id="@+id/col2"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="@android:color/darker_gray">
@@ -55,22 +59,15 @@
                 android:layout_height="wrap_content"
                 android:padding="16dp"
                 android:text="Colonne 2"
-                android:textColor="@color/purple_700"
-                />
-
-
+                android:textColor="@color/purple_700" />
 
         </LinearLayout>
 
 
-
-
-
-
         <LinearLayout
             android:id="@+id/col3"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="@color/colorAccent">
@@ -80,16 +77,26 @@
                 android:layout_height="wrap_content"
                 android:padding="16dp"
                 android:text="Colonne 3"
-                android:textColor="@color/purple_700"
-                />
-
-
+                android:textColor="@color/purple_700" />
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/col4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="@color/design_default_color_surface">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="Colonne 4"
+                android:textColor="@color/purple_700" />
 
-
+        </LinearLayout>
 
     </LinearLayout>
 
