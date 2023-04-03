@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import static com.example.myapplication.Register.pseudo;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
@@ -57,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             Intent myIntent = new Intent(MainActivity.this, Login.class);
             startActivity(myIntent);
         } else {
-            textView.setText(" Welcome " + user.getEmail());
+            textView.setText(" Welcome " + pseudo);
         }
         //ici on identifie l'edit Text et on cree le noeud dans la base de donnee
 

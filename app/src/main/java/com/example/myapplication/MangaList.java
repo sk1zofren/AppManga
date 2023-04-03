@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -97,6 +98,15 @@ public class MangaList extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
+            }
+        });
+
+        builder.setNeutralButton("Commenter", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(MangaList.this, MangaCommentActivity.class);
+                intent.putExtra("manga_title", manga.getTitle());
+                startActivity(intent);
             }
         });
 

@@ -30,7 +30,7 @@ public class Register extends AppCompatActivity {
      FirebaseAuth mAuth;
      ProgressBar progressBar;
      TextView textView;
-    String pseudo;
+    public static String pseudo;
      EditText username;
     @Override
     public void onStart() {

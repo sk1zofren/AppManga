@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
@@ -15,11 +14,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Material3.Light"
         tools:targetApi="31">
+        <activity
+            android:name=".MangaCommentActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDI_WpTz6TWzYN1FNTb7iGch9enaJl_wqE">
-        </meta-data>
+            android:value="AIzaSyDI_WpTz6TWzYN1FNTb7iGch9enaJl_wqE"></meta-data>
 
         <activity
             android:name=".Map"
