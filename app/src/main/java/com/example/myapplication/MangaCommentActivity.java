@@ -4,10 +4,15 @@ import static com.example.myapplication.Register.pseudo;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -41,6 +46,13 @@ public class MangaCommentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manga_comment);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("My Notification", "My Notification", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+
+
         // Get manga information from the Intent
         Intent intent = getIntent();
         mangaId = intent.getStringExtra("manga_id");
@@ -61,6 +73,19 @@ public class MangaCommentActivity extends AppCompatActivity {
         commentsRecyclerView.setAdapter(commentAdapter);
 
         fetchComments();
+    }
+
+    private void getNotif() {
+
+
+        NotificationCompat.Builder mbuilder = new NotificationCompat.Builder(MangaCommentActivity.this, "My Notification")
+                .setSmallIcon(com.google.android.gms.base.R.drawable.common_google_signin_btn_icon_dark_focused)
+                .setContentTitle("The Notification").setContentText("This is a notification for you");
+
+        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(MangaCommentActivity.this);
+
+        managerCompat.notify(1, mbuilder.build());
+
     }
 
     private void fetchComments() {
@@ -86,7 +111,7 @@ public class MangaCommentActivity extends AppCompatActivity {
         String commentText = commentEditText.getText().toString().trim();
         if (commentText.isEmpty()) {
             // Show error message
-            return;
+             return;
         }
 
         // Get user information (Replace with actual user data)
@@ -101,6 +126,8 @@ public class MangaCommentActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> {
                     // Handle error
                 });
+
+        getNotif();
 
     }
 }

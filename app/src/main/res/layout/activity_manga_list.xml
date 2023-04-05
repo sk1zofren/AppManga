@@ -1,24 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#000000">
 
     <Button
-        android:layout_width="wrap_content"
+        android:id="@+id/add_to_list_button"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add to your list"
-        android:onClick="ToFavoris"/>
+        android:text="Add to Favorites"
+        android:textSize="18sp"
+        android:background="#515A5A"
+        android:textColor="@color/white"
+        android:onClick="ToFavoris"
+        android:layout_marginBottom="16dp"/>
 
     <ListView
         android:id="@+id/manga_list_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:divider="@null"
-        android:dividerHeight="0dp" />
-
-
-
-
+        android:dividerHeight="0dp"/>
 
 </LinearLayout>

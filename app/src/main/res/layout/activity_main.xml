@@ -5,66 +5,73 @@
     android:id="@+id/To_Form"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#C3431B"
+    android:background="#FF9B36"
     android:gravity="center"
     android:orientation="vertical"
+    android:padding="16dp"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/logo_image"
+        android:layout_width="wrap_content"
+        android:layout_height="228dp"
+        android:src="@drawable/hopu" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="HOME"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="32dp" />
 
     <Button
         android:id="@+id/principalPage"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="ToPrincipalPage"
-        android:text="Principal Page" />
-
-    <TextView
-        android:id="@+id/user_details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="TierList"
+        android:textAllCaps="false" />
 
     <Button
-        android:id="@+id/logout"
-        android:layout_width="wrap_content"
+        android:id="@+id/bt_manga_list2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="ToLogout"
-        android:text="@string/logout" />
-
-    <Button
-        android:id="@+id/bt_manga_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:onClick="ToMangaPage"
-        android:text="Manga Page" />
+        android:text="Manga List"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/bt_favoris"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:onClick="ToFavorisPage"
-        android:text="Favoris Page" />
+        android:text="Favoris Page"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/bt_map"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:onClick="ToMapPage"
-        android:text="Map Page" />
+        android:text="Map Page"
+        android:textAllCaps="false" />
+
 
     <Button
-        android:id="@+id/bt_send"
-        android:layout_width="wrap_content"
+        android:id="@+id/logout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="ToSend"
-        android:text="Send" />
-
-    <EditText
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="inesert name"
-        />
-
+        android:layout_marginTop="8dp"
+        android:onClick="ToLogout"
+        android:text="@string/logout"
+        android:textAllCaps="false" />
 
 </LinearLayout>
