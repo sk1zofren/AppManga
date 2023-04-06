@@ -38,7 +38,7 @@ public class Register extends AppCompatActivity {
         editTextPassword = findViewById(R.id.password);
         progressBar = findViewById(R.id.progressBar);
         textView = findViewById(R.id.loginNow);
-        username = findViewById(R.id.User);
+
     }
 
     public void GoRegister(View view){

@@ -7,9 +7,6 @@ public class User  {
     String username;
     ArrayList<Manga> arrayList;
 
-
-
-
     public User(){
 
         arrayList = new ArrayList<Manga>();

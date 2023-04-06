@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -17,61 +16,44 @@
         android:layout_height="228dp"
         android:src="@drawable/hopu" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="HOME"
-        android:textColor="#FFFFFF"
-        android:textSize="24sp"
-        android:textStyle="bold" />
-
     <Space
         android:layout_width="match_parent"
         android:layout_height="32dp" />
 
+    <!-- Update the buttons to use the custom style -->
     <Button
         android:id="@+id/principalPage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/MangaButtonStyle"
+        android:layout_marginTop="8dp"
         android:onClick="ToPrincipalPage"
-        android:text="TierList"
-        android:textAllCaps="false" />
+        android:text="TierList" />
 
     <Button
         android:id="@+id/bt_manga_list2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/MangaButtonStyle"
         android:layout_marginTop="8dp"
         android:onClick="ToMangaPage"
-        android:text="Manga List"
-        android:textAllCaps="false" />
+        android:text="Manga List" />
 
     <Button
         android:id="@+id/bt_favoris"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/MangaButtonStyle"
         android:layout_marginTop="8dp"
         android:onClick="ToFavorisPage"
-        android:text="Favoris Page"
-        android:textAllCaps="false" />
+        android:text="Favoris Page" />
 
     <Button
         android:id="@+id/bt_map"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/MangaButtonStyle"
         android:layout_marginTop="8dp"
         android:onClick="ToMapPage"
-        android:text="Map Page"
-        android:textAllCaps="false" />
-
+        android:text="Map Page" />
 
     <Button
         android:id="@+id/logout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/MangaButtonStyle"
         android:layout_marginTop="8dp"
         android:onClick="ToLogout"
-        android:text="@string/logout"
-        android:textAllCaps="false" />
+        android:text="@string/logout" />
 
 </LinearLayout>

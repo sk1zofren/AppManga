@@ -3,5 +3,18 @@
 
 
 
+        <!-- Autres styles existants -->
+
+        <style name="MangaButtonStyle" parent="Widget.AppCompat.Button">
+            <item name="android:layout_width">match_parent</item>
+            <item name="android:layout_height">wrap_content</item>
+            <item name="android:textColor">#FFFFFF</item>
+            <item name="android:textSize">18sp</item>
+            <item name="android:background">@drawable/manga_button_background</item>
+            <item name="android:textAllCaps">false</item>
+            <item name="android:fontFamily">@font/your_custom_font</item>
+        </style>
+
+
 
 </resources>
