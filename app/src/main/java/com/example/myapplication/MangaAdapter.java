@@ -31,8 +31,7 @@ public class MangaAdapter extends ArrayAdapter<Manga> {
         Manga manga = getItem(position);
 
         // Mettre à jour la vue avec les données de l'objet Manga
-        TextView titleTextView = convertView.findViewById(R.id.title_text_view);
-        titleTextView.setText(manga.getTitle());
+
 
         // Récupérer l'URL de l'image pour le manga actuel
         String imageUrl = getItem(position).getImageUrl();

@@ -41,7 +41,7 @@ public class MangaList extends AppCompatActivity {
     private ArrayAdapter<Manga> mangaListAdapter;
     private ArrayList<Manga> mangaList;
     ArrayList<Manga> favMangaList;
-    Button buttonFav;
+
     DatabaseReference UserRef;
     private FirebaseUser user;
     @SuppressLint("MissingInflatedId")
@@ -51,14 +51,7 @@ public class MangaList extends AppCompatActivity {
         setContentView(R.layout.activity_manga_list);
         mangaListView = findViewById(R.id.manga_list_view);
         mAuth = FirebaseAuth.getInstance();
-        buttonFav = findViewById(R.id.add_to_list_button);
         user = mAuth.getCurrentUser();
-
-        if(user==null){
-            buttonFav.setEnabled(false); buttonFav.setVisibility(View.INVISIBLE);
-        }else{
-            buttonFav.setEnabled(true); buttonFav.setVisibility(View.VISIBLE);
-        }
 
         mangaListAdapter = new ArrayAdapter<Manga>(this, R.layout.list_item_manga, new ArrayList<Manga>()) {
             @Override

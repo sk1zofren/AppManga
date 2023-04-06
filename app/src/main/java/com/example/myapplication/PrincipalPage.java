@@ -28,6 +28,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class PrincipalPage extends AppCompatActivity {
 
@@ -40,6 +42,8 @@ public class PrincipalPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal_page);
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
 
         // Retrieve the HorizontalScrollView containers
         ScrollView col1ScrollView = findViewById(R.id.col1_container);
@@ -58,7 +62,13 @@ public class PrincipalPage extends AppCompatActivity {
         initializeDragAndDropListeners(col3Container);
 
         // Retrieve the database reference
-        mangasRef = FirebaseDatabase.getInstance("https://mangas-a1043.europe-west1.firebasedatabase.app/").getReference("listFavManga");
+        if (currentUser != null) {
+            mangasRef = FirebaseDatabase.getInstance("https://mangas-a1043.europe-west1.firebasedatabase.app/")
+                    .getReference("listFavManga")
+                    .child(currentUser.getUid());
+        } else {
+            // Gérer le cas où l'utilisateur n'est pas connecté, par exemple en affichant un message
+        }
 
         // Create a new ArrayList to store favorite mangas
         ArrayList<Manga> favMangaList = new ArrayList<>();
@@ -86,24 +96,25 @@ public class PrincipalPage extends AppCompatActivity {
                 //...
             }
             @SuppressLint("RestrictedApi")
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, String previousChildName) {
-                Object value = snapshot.getValue();
-                if (value instanceof HashMap) {
-                    HashMap<String, Object> mangaData = (HashMap<String, Object>) value;
-                    String arrayListe = mangaData.get("arrayListe").toString();
-                    int startIndex = arrayListe.indexOf("title=");
-                    int endIndex = arrayListe.indexOf("}", startIndex);
-                    String title = arrayListe.substring(startIndex + 6, endIndex);
 
-                    String target = "imageUrl";
-                    int startIndex2 = arrayListe.indexOf(target) + target.length();
-                    int endIndex2 = arrayListe.indexOf(",", startIndex2);
-                    String imageUrl = arrayListe.substring(startIndex2 + 1, endIndex2);
 
-                    Manga manga = new Manga(title);
-                    manga.setImageUrl(imageUrl);
-                    favMangaList.add(manga);
+
+
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot snapshot, String previousChildName) {
+                    if (snapshot.getValue() instanceof HashMap) {
+                        // Récupérer les données de l'enfant sous forme d'objet HashMap
+                        HashMap<String, String> mangaData = (HashMap<String, String>) snapshot.getValue();
+
+                        // Créer un nouvel objet Manga à partir des données récupérées
+                        String title = mangaData.get("title");
+                        String imageUrl = mangaData.get("imageUrl");
+
+                        Manga manga = new Manga(title);
+                        manga.setImageUrl(imageUrl); // Assigner l'URL de l'image à l'objet Manga
+
+                        // Ajouter l'objet Manga à la liste
+                        favMangaList.add(manga);
 
                     ImageView imageView = new ImageView(PrincipalPage.this);
                     imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -125,16 +136,13 @@ public class PrincipalPage extends AppCompatActivity {
                     }
                 } else {
                     // Log an error if the data is not stored as a HashMap
-                    Log.e(TAG, "Unexpected data type: " + value.getClass().getSimpleName());
+                    Log.e(TAG, "Unexpected data type: ");
                 }
             }
 
             // ...
         });
     }
-
-
-
     private class ImageTouchListener implements View.OnTouchListener {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
