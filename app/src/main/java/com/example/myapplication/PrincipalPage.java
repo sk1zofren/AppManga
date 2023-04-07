@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.Rotate;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,6 +31,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.bumptech.glide.request.RequestOptions;
+
+
 
 public class PrincipalPage extends AppCompatActivity {
 
@@ -49,17 +53,26 @@ public class PrincipalPage extends AppCompatActivity {
         ScrollView col1ScrollView = findViewById(R.id.col1_container);
         ScrollView col2ScrollView = findViewById(R.id.col2_container);
         ScrollView col3ScrollView = findViewById(R.id.col3_container);
+        ScrollView col4ScrollView = findViewById(R.id.col4_container);
+        ScrollView col5ScrollView = findViewById(R.id.col5_container);
+        ScrollView col6ScrollView = findViewById(R.id.col6_container);
 
         // Retrieve the LinearLayouts inside the HorizontalScrollView containers
         LinearLayout col1Container = col1ScrollView.findViewById(R.id.col1_linear_layout);
         LinearLayout col2Container = col2ScrollView.findViewById(R.id.col2_linear_layout);
         LinearLayout col3Container = col3ScrollView.findViewById(R.id.col3_linear_layout);
+        LinearLayout col4Container = col4ScrollView.findViewById(R.id.col4_linear_layout);
+        LinearLayout col5Container = col5ScrollView.findViewById(R.id.col5_linear_layout);
+        LinearLayout col6Container = col6ScrollView.findViewById(R.id.col6_linear_layout);
 
 
         // Initialize the drag and drop listeners for each LinearLayout
         initializeDragAndDropListeners(col1Container);
         initializeDragAndDropListeners(col2Container);
         initializeDragAndDropListeners(col3Container);
+        initializeDragAndDropListeners(col4Container);
+        initializeDragAndDropListeners(col5Container);
+        initializeDragAndDropListeners(col6Container);
 
         // Retrieve the database reference
         if (currentUser != null) {
@@ -95,26 +108,25 @@ public class PrincipalPage extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
                 //...
             }
+
             @SuppressLint("RestrictedApi")
 
 
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, String previousChildName) {
+                if (snapshot.getValue() instanceof HashMap) {
+                    // Récupérer les données de l'enfant sous forme d'objet HashMap
+                    HashMap<String, String> mangaData = (HashMap<String, String>) snapshot.getValue();
 
+                    // Créer un nouvel objet Manga à partir des données récupérées
+                    String title = mangaData.get("title");
+                    String imageUrl = mangaData.get("imageUrl");
 
-                @Override
-                public void onChildAdded(@NonNull DataSnapshot snapshot, String previousChildName) {
-                    if (snapshot.getValue() instanceof HashMap) {
-                        // Récupérer les données de l'enfant sous forme d'objet HashMap
-                        HashMap<String, String> mangaData = (HashMap<String, String>) snapshot.getValue();
+                    Manga manga = new Manga(title);
+                    manga.setImageUrl(imageUrl); // Assigner l'URL de l'image à l'objet Manga
 
-                        // Créer un nouvel objet Manga à partir des données récupérées
-                        String title = mangaData.get("title");
-                        String imageUrl = mangaData.get("imageUrl");
-
-                        Manga manga = new Manga(title);
-                        manga.setImageUrl(imageUrl); // Assigner l'URL de l'image à l'objet Manga
-
-                        // Ajouter l'objet Manga à la liste
-                        favMangaList.add(manga);
+                    // Ajouter l'objet Manga à la liste
+                    favMangaList.add(manga);
 
                     ImageView imageView = new ImageView(PrincipalPage.this);
                     imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -122,23 +134,29 @@ public class PrincipalPage extends AppCompatActivity {
                     imageView.setTag(imageUrl);
                     Glide.with(PrincipalPage.this)
                             .load(imageUrl)
-                            .override(105, 200)
+                            .override(140, 150)
+                            .apply(RequestOptions.bitmapTransform(new Rotate(270)))
                             .into(imageView);
                     imageView.setOnTouchListener(new ImageTouchListener());
 
-                    // Add the ImageView to the correct LinearLayout container
-                    if (col1Container.getChildCount() <= col2Container.getChildCount() && col1Container.getChildCount() <= col3Container.getChildCount()) {
-                        col1Container.addView(imageView);
-                    } else if (col2Container.getChildCount() <= col3Container.getChildCount()) {
-                        col2Container.addView(imageView);
-                    } else {
-                        col3Container.addView(imageView);
+                    // Trouver le conteneur avec le moins d'images et ajouter l'ImageView
+                    LinearLayout smallestContainer = col1Container;
+                    int smallestChildCount = col1Container.getChildCount();
+
+                    for (LinearLayout container : new LinearLayout[]{col2Container, col3Container, col4Container, col5Container, col6Container}) {
+                        if (container.getChildCount() < smallestChildCount) {
+                            smallestChildCount = container.getChildCount();
+                            smallestContainer = container;
+                        }
                     }
+
+                    smallestContainer.addView(imageView);
                 } else {
                     // Log an error if the data is not stored as a HashMap
                     Log.e(TAG, "Unexpected data type: ");
                 }
-            }
+
+                                        }
 
             // ...
         });
@@ -183,7 +201,8 @@ public class PrincipalPage extends AppCompatActivity {
                         imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
                         imageView.setTag(imageUrl);
                         Glide.with(PrincipalPage.this)
-                                .load(imageUrl).override(105, 200)
+                                .load(imageUrl).override(140, 150)
+                                .apply(RequestOptions.bitmapTransform(new Rotate(270)))
                                 .into(imageView);
                         imageView.setOnTouchListener(new ImageTouchListener());
 
@@ -201,7 +220,7 @@ public class PrincipalPage extends AppCompatActivity {
                             View child = targetContainer.getChildAt(i);
                             if (child instanceof ImageView) {
                                 float targetX = event.getX();
-                                if (child.getX() > targetX) {
+                                if (child.getX() + child.getWidth() / 2 > targetX) {
                                     targetContainer.addView(imageView, i);
                                     isImageAdded = true;
                                     break;
@@ -211,6 +230,7 @@ public class PrincipalPage extends AppCompatActivity {
                         if (!isImageAdded) {
                             targetContainer.addView(imageView);
                         }
+                        v.setBackgroundColor(Color.TRANSPARENT);
                         return true;
                     case DragEvent.ACTION_DRAG_ENDED:
                         v.setBackgroundColor(Color.TRANSPARENT);
@@ -221,6 +241,7 @@ public class PrincipalPage extends AppCompatActivity {
             }
         });
     }
+
 
     // Méthode pour convertir les dp en pixels
     private int dpToPx(int dp) {

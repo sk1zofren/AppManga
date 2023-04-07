@@ -42,6 +42,7 @@ public class MangaCommentActivity extends AppCompatActivity {
     private CommentAdapter commentAdapter;
     private ArrayList<Comment> comments;
     FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,13 +52,6 @@ public class MangaCommentActivity extends AppCompatActivity {
         Intent intent = getIntent();
         mangaId = intent.getStringExtra("manga_id");
         mangaTitle = intent.getStringExtra("manga_title");
-        String commentId = getIntent().getStringExtra("comment_id");
-
-        if (mangaId != null && commentId != null) {
-            loadSpecificComment(mangaId, commentId);
-        } else {
-            // Gérer le cas où mangaId ou commentId est null
-        }
 
         if (mangaTitle == null || mangaTitle.isEmpty()) {
             // Handle the error, for example, by showing an error message or finishing the activity
@@ -69,9 +63,6 @@ public class MangaCommentActivity extends AppCompatActivity {
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(channel);
         }
-
-
-
 
         titleTextView = findViewById(R.id.manga_title_text_view);
         commentEditText = findViewById(R.id.comment_edit_text);
@@ -91,10 +82,9 @@ public class MangaCommentActivity extends AppCompatActivity {
     }
 
     private void sendNotification(String mangaId, String mangaTitle, String userName, String commentText, String commentId) {
-        // 1. Create the intent to open MangaCommentActivity
+        // 1. Create the intent to open MainActivity
         Intent intent = new Intent(this, MangaCommentActivity.class);
-        intent.putExtra("manga_id", mangaId);
-        intent.putExtra("comment_id", commentId);
+        intent.putExtra("manga_title", mangaTitle);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
         // 2. Create a PendingIntent
@@ -111,35 +101,6 @@ public class MangaCommentActivity extends AppCompatActivity {
         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(MangaCommentActivity.this);
         managerCompat.notify(1, builder.build());
     }
-
-
-    private void loadSpecificComment(String mangaId, String commentId) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance("https://mangas-a1043.europe-west1.firebasedatabase.app/").getReference("manga_comments").child(mangaId).child("comments").child(commentId);
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Comment comment = dataSnapshot.getValue(Comment.class);
-                if (comment != null) {
-                    // Mettez à jour l'interface utilisateur avec le commentaire spécifique
-                    updateUIWithSpecificComment(comment);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Gérer l'erreur
-            }
-        });
-    }
-
-    private void updateUIWithSpecificComment(Comment comment) {
-        // Mettez à jour l'interface utilisateur avec le commentaire spécifique
-        // Par exemple, vous pouvez utiliser un TextView pour afficher le texte du commentaire
-        TextView commentTextView = findViewById(R.id.specific_comment_text_view);
-        commentTextView.setText(comment.getCommentText());
-    }
-
-
 
 
     private void fetchComments() {
@@ -185,5 +146,4 @@ public class MangaCommentActivity extends AppCompatActivity {
                     // Handle error
                 });
     }
-
 }

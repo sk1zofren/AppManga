@@ -18,10 +18,6 @@
             android:name=".MangaCommentActivity"
             android:exported="false" />
 
-        <receiver
-            android:name=".NotificationReceiver"
-            android:exported="false" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDI_WpTz6TWzYN1FNTb7iGch9enaJl_wqE"></meta-data>

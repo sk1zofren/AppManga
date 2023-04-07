@@ -10,10 +10,9 @@
 
     <ScrollView
         android:id="@+id/col1_container"
-        android:layout_width="1dp"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:layout_marginEnd="-250dp">
+        android:layout_weight="1">
 
         <LinearLayout
             android:id="@+id/col1_linear_layout"
@@ -28,8 +27,7 @@
         android:id="@+id/col2_container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:layout_marginEnd="-250dp">
+        android:layout_weight="1">
 
         <LinearLayout
             android:id="@+id/col2_linear_layout"
@@ -54,4 +52,49 @@
             android:minHeight="200dp" />
 
     </ScrollView>
+
+    <ScrollView
+        android:id="@+id/col4_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/col4_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:minHeight="200dp" />
+
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/col5_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/col5_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:minHeight="200dp" />
+
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/col6_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <LinearLayout
+            android:id="@+id/col6_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:minHeight="200dp" />
+
+    </ScrollView>
 </LinearLayout>
+
