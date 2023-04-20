@@ -8,7 +8,6 @@
     android:background="@drawable/estec">
 
 
-
     <ListView
         android:id="@+id/manga_list_view"
         android:layout_width="match_parent"

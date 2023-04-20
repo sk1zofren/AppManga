@@ -23,6 +23,7 @@ import java.util.HashMap;
 public class Favoris extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+
     private DatabaseReference mangasRef;
     private ArrayList<Manga> favMangaList;
     private MangaAdapter adapter;

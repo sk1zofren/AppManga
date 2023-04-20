@@ -3,6 +3,8 @@ package com.example.myapplication;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 
@@ -16,9 +18,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class Map extends AppCompatActivity implements OnMapReadyCallback  {
 
     GoogleMap gMap;
-    GoogleMap comicMap;
-    GoogleMap MIAMap;
     FrameLayout map;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,22 +31,35 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback  {
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         this.gMap = googleMap;
+
         LatLng mapLouv = new LatLng(50.483055579479846, 4.182554791926987);
-        this.gMap.addMarker(new MarkerOptions().position(mapLouv).title("Winter Geek Festival"));
-        this.gMap.moveCamera(CameraUpdateFactory.newLatLng(mapLouv));
+        gMap.addMarker(new MarkerOptions().position(mapLouv).title("Winter Geek Festival"));
 
-        this.comicMap = googleMap;
         LatLng mapComic = new LatLng(50.86434772782046, 4.34721656092712);
-        this.comicMap.addMarker(new MarkerOptions().position(mapComic).title("Comic Con"));
-        this.comicMap.moveCamera(CameraUpdateFactory.newLatLng(mapComic));
+        gMap.addMarker(new MarkerOptions().position(mapComic).title("Comic Con"));
 
-        this.MIAMap = googleMap;
         LatLng mapMIA = new LatLng(50.899750541183735, 4.337251640384408);
-        this.MIAMap.addMarker(new MarkerOptions().position(mapMIA).title("Made In Asia"));
-        this.MIAMap.moveCamera(CameraUpdateFactory.newLatLng(mapMIA));
+        gMap.addMarker(new MarkerOptions().position(mapMIA).title("Made In Asia"));
 
+        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mapLouv, 10));
 
-
-
+        gMap.setOnInfoWindowClickListener(marker -> {
+            String url = "";
+            switch (marker.getTitle()) {
+                case "Winter Geek Festival":
+                    url = "https://www.wintergeekfestival.be/";
+                    break;
+                case "Comic Con":
+                    url = "https://comicconbrussels.com/fr/homepage-fr/";
+                    break;
+                case "Made In Asia":
+                    url = "https://www.madeinasia.be/";
+                    break;
+            }
+            if (!url.isEmpty()) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(browserIntent);
+            }
+        });
     }
 }

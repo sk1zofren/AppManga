@@ -67,6 +67,8 @@ public class MangaList extends AppCompatActivity {
                         .load(manga.getImageUrl())
                         .placeholder(R.drawable.ic_launcher_foreground)
                         .error(R.drawable.ic_launcher_foreground)
+                        .resize(300, 800)
+                        .centerInside() // Vous pouvez utiliser centerCrop() à la place, selon vos besoins.
                         .into(imageView);
 
                 return convertView;
@@ -87,6 +89,14 @@ public class MangaList extends AppCompatActivity {
                 showMangaDetails(selectedManga);
             }
         });
+    }
+
+    //methode que je suis obliger d'implémenter sinon quand j'appuie sur le boutton retour, je quite l'a^p
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 

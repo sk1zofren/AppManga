@@ -4,7 +4,7 @@
     android:id="@+id/To_Form"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FF9B36"
+    android:background="#ffcc42"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="16dp"
@@ -22,6 +22,7 @@
 
     <!-- Update the buttons to use the custom style -->
     <Button
+        android:textColor="#ffcc42"
         android:id="@+id/principalPage"
         style="@style/MangaButtonStyle"
         android:layout_marginTop="8dp"
@@ -29,6 +30,7 @@
         android:text="TierList" />
 
     <Button
+        android:textColor="#ffcc42"
         android:id="@+id/bt_manga_list2"
         style="@style/MangaButtonStyle"
         android:layout_marginTop="8dp"
@@ -36,6 +38,8 @@
         android:text="Manga List" />
 
     <Button
+
+        android:textColor="#ffcc42"
         android:id="@+id/bt_favoris"
         style="@style/MangaButtonStyle"
         android:layout_marginTop="8dp"
@@ -43,6 +47,7 @@
         android:text="Favoris Page" />
 
     <Button
+        android:textColor="#ffcc42"
         android:id="@+id/bt_map"
         style="@style/MangaButtonStyle"
         android:layout_marginTop="8dp"
@@ -50,6 +55,7 @@
         android:text="Map Page" />
 
     <Button
+        android:textColor="#ffcc42"
         android:id="@+id/logout"
         style="@style/MangaButtonStyle"
         android:layout_marginTop="8dp"

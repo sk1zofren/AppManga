@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/image_view"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="120dp"
+        android:layout_height="190dp"
         android:layout_margin="8dp"
         android:background="@drawable/ic_launcher_background"
         android:scaleType="centerCrop" />
@@ -19,8 +19,7 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-
-
+        <!-- Add any additional views or layouts inside this LinearLayout -->
 
     </LinearLayout>
 

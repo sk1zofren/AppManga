@@ -6,10 +6,13 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.RemoteInput;
 
 import android.app.PendingIntent;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,6 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+
 
 public class MangaCommentActivity extends AppCompatActivity {
 
@@ -82,24 +86,52 @@ public class MangaCommentActivity extends AppCompatActivity {
     }
 
     private void sendNotification(String mangaId, String mangaTitle, String userName, String commentText, String commentId) {
-        // 1. Create the intent to open MainActivity
-        Intent intent = new Intent(this, MangaCommentActivity.class);
-        intent.putExtra("manga_title", mangaTitle);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        DatabaseReference userFavMangasRef = FirebaseDatabase.getInstance("https://mangas-a1043.europe-west1.firebasedatabase.app/")
+                .getReference("listFavManga")
+                .child(user.getUid());
 
-        // 2. Create a PendingIntent
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        userFavMangasRef.orderByChild("title").equalTo(mangaTitle).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // The manga is in the user's favorites list, proceed with sending the notification
+                    Intent intent = new Intent(MangaCommentActivity.this, MangaCommentActivity.class);
+                    intent.putExtra("manga_title", mangaTitle);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-        // 3. Build the notification with the PendingIntent
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(MangaCommentActivity.this, "My Notification")
-                .setSmallIcon(com.google.android.gms.base.R.drawable.common_google_signin_btn_icon_dark_focused)
-                .setContentTitle(mangaTitle) // Add the manga title
-                .setContentText(userName + ": " + commentText) // Add the username and the comment
-                .setContentIntent(pendingIntent) // Add the PendingIntent
-                .setAutoCancel(true); // The notification closes automatically when clicked
+                    PendingIntent pendingIntent = PendingIntent.getActivity(MangaCommentActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(MangaCommentActivity.this);
-        managerCompat.notify(1, builder.build());
+                    RemoteInput remoteInput = new RemoteInput.Builder(CommentBroadcastReceiver.KEY_COMMENT_REPLY)
+                            .setLabel("Add a comment")
+                            .build();
+
+                    Intent replyIntent = new Intent(MangaCommentActivity.this, CommentBroadcastReceiver.class);
+                    replyIntent.putExtra("manga_title", mangaTitle);
+                    PendingIntent replyPendingIntent = PendingIntent.getBroadcast(MangaCommentActivity.this, 0, replyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    NotificationCompat.Action replyAction = new NotificationCompat.Action.Builder(R.drawable.a_j, "Reply", replyPendingIntent)
+                            .addRemoteInput(remoteInput)
+                            .build();
+
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(MangaCommentActivity.this, "My Notification")
+                            .setSmallIcon(com.google.android.gms.base.R.drawable.common_google_signin_btn_icon_dark_focused)
+                            .setContentTitle(mangaTitle)
+                            .setContentText(userName + ": " + commentText)
+                            .setContentIntent(pendingIntent)
+                            .addAction(replyAction)
+                            .setAutoCancel(true);
+
+                    NotificationManagerCompat managerCompat = NotificationManagerCompat.from(MangaCommentActivity.this);
+                    managerCompat.notify(1, builder.build());
+                } else {
+                    // The manga is not in the user's favorites list, do not send the notification
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle error
+            }
+        });
     }
 
 
