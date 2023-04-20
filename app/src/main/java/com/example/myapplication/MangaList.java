@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,8 +21,12 @@ import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -122,21 +127,55 @@ public class MangaList extends AppCompatActivity {
         builder.setNegativeButton("Add Fav", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                // Ajouter le manga à Firebase
-                DatabaseReference userFavMangaRef = FirebaseDatabase.getInstance("https://mangas-a1043.europe-west1.firebasedatabase.app/")
+                DatabaseReference listFavMangaRef = FirebaseDatabase.getInstance("https://mangas-a1043.europe-west1.firebasedatabase.app/")
                         .getReference()
                         .child("listFavManga")
-                        .child(user.getUid())
-                        .push(); // Utiliser push() pour générer un ID unique pour chaque manga ajouté
+                        .child(user.getUid());
 
-                // Créer un HashMap pour stocker le titre et l'URL de l'image du manga
-                HashMap<String, String> mangaData = new HashMap<>();
-                mangaData.put("title", manga.getTitle());
-                mangaData.put("imageUrl", manga.getImageUrl());
 
-                userFavMangaRef.setValue(mangaData);
+                Query query = listFavMangaRef.orderByChild("title").equalTo(manga.getTitle());
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                                Integer currentFav = childSnapshot.child("fav").getValue(Integer.class);
+                                if (currentFav == null) {
+                                    currentFav = 0;
+                                }
+                                int newFavCount = currentFav + 1;
+                                childSnapshot.getRef().child("fav").setValue(newFavCount);
+
+                                // Update the Manga object's fav value
+                                manga.setFav(newFavCount);
+
+                            }
+                        } else {
+                            DatabaseReference newFavMangaRef = listFavMangaRef.push();
+                            HashMap<String, Object> mangaData = new HashMap<>();
+                            mangaData.put("title", manga.getTitle());
+                            mangaData.put("imageUrl", manga.getImageUrl());
+                            mangaData.put("fav", 1); // Initialize the fav count to 1
+
+                            newFavMangaRef.setValue(mangaData);
+
+                            // Update the Manga object's fav value
+                            manga.setFav(1);
+
+                        }
+                    }
+
+
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+
             }
+
         });
+
 
         AlertDialog dialog = builder.create();
           dialog.show();

@@ -74,6 +74,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(myIntent);
     }
 
+    public void ToClassement(View view) {
+        Intent intent = new Intent(MainActivity.this, TopMangaActivity.class);
+        startActivity(intent);
+    }
+
     public void ToMapPage(View view) {
         Intent myIntent = new Intent(MainActivity.this, Map.class);
         startActivity(myIntent);

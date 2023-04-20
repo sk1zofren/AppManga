@@ -6,17 +6,21 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Manga {
-    private String title ;
+    private String title;
+    private int fav;
     private String imageUrl;
     private String synopsis;
     private Bitmap image;
+    private String mangaKey;
 
     private ArrayList<String> arrayListe;
-    public Manga(String title, String imageUrl, String synopsis, ArrayList<String> arrayListe) {
+
+    public Manga(String title, String imageUrl, String synopsis, ArrayList<String> arrayListe, int fav) {
         this.title = title;
         this.imageUrl = imageUrl;
         this.synopsis = synopsis;
         this.arrayListe = arrayListe;
+        this.fav = fav;
     }
 
     public Manga() {
@@ -38,6 +42,15 @@ public class Manga {
     public String getImageUrl() {
         return imageUrl;
     }
+
+    public int getFav() {
+        return fav;
+    }
+
+    public void setFav(int fav) {
+        this.fav = fav;
+    }
+
 
     public String getSynopsis() {
         return synopsis;
@@ -63,6 +76,14 @@ public class Manga {
         return arrayListe;
     }
 
+    public String getMangaKey() {
+        return mangaKey;
+    }
+
+    public void setMangaKey(String mangaKey) {
+        this.mangaKey = mangaKey;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -75,6 +96,4 @@ public class Manga {
     public int hashCode() {
         return Objects.hash(title);
     }
-
 }
-

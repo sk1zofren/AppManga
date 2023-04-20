@@ -42,6 +42,8 @@ public class PrincipalPage extends AppCompatActivity {
     private String title;
     private String imageUrl;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

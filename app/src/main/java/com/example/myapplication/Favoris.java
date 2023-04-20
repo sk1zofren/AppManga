@@ -82,13 +82,6 @@ public class Favoris extends AppCompatActivity {
             }
 
 
-
-
-
-
-
-
-
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, String previousChildName) {
                 // Rien à faire ici

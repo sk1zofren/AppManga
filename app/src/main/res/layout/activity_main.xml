@@ -56,6 +56,14 @@
 
     <Button
         android:textColor="#ffcc42"
+        android:id="@+id/bt_classement"
+        style="@style/MangaButtonStyle"
+        android:layout_marginTop="8dp"
+        android:onClick="ToClassement"
+        android:text="Classement" />
+
+    <Button
+        android:textColor="#ffcc42"
         android:id="@+id/logout"
         style="@style/MangaButtonStyle"
         android:layout_marginTop="8dp"
