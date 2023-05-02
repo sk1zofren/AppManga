@@ -4,7 +4,7 @@
     android:id="@+id/To_Form"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffcc42"
+    android:background="@color/colorPrimary"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="16dp"

@@ -40,9 +40,7 @@ public class TopMangaActivity extends AppCompatActivity {
         top2ImageView = findViewById(R.id.top2_image_view);
         top3ImageView = findViewById(R.id.top3_image_view);
 
-        top1TextView = findViewById(R.id.top1_text_view);
-        top2TextView = findViewById(R.id.top2_text_view);
-        top3TextView = findViewById(R.id.top3_text_view);
+
 
         listFavMangaRef = FirebaseDatabase.getInstance("https://mangas-a1043.europe-west1.firebasedatabase.app/")
                 .getReference("listFavManga")
@@ -69,18 +67,18 @@ public class TopMangaActivity extends AppCompatActivity {
                         Collections.reverse(topMangas);
 
                         if (topMangas.size() > 0) {
-                            top1TextView.setText(topMangas.get(0).getTitle());
-                            Picasso.get().load(topMangas.get(0).getImageUrl()).into(top1ImageView);
+
+                            Picasso.get().load(topMangas.get(1).getImageUrl()).into(top1ImageView);
                         }
 
                         if (topMangas.size() > 1) {
-                            top2TextView.setText(topMangas.get(1).getTitle());
-                            Picasso.get().load(topMangas.get(1).getImageUrl()).into(top2ImageView);
+
+                            Picasso.get().load(topMangas.get(2).getImageUrl()).into(top2ImageView);
                         }
 
                         if (topMangas.size() > 2) {
-                            top3TextView.setText(topMangas.get(2).getTitle());
-                            Picasso.get().load(topMangas.get(2).getImageUrl()).into(top3ImageView);
+
+                            Picasso.get().load(topMangas.get(0).getImageUrl()).into(top3ImageView);
                         }
                     }
 

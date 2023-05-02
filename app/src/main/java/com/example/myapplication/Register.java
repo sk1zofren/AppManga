@@ -70,7 +70,7 @@ public class Register extends AppCompatActivity {
                             UserRef.push().setValue(user1);
                             Toast.makeText(Register.this, "Account created.", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(Register.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Register.this, "Authentication failed. Veuillez verfier vos informations", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
