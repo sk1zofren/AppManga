@@ -27,7 +27,7 @@ public class Register extends AppCompatActivity {
     ProgressBar progressBar;
     TextView textView;
     public static String pseudo;
-    EditText username;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +38,8 @@ public class Register extends AppCompatActivity {
         editTextPassword = findViewById(R.id.password);
         progressBar = findViewById(R.id.progressBar);
         textView = findViewById(R.id.loginNow);
+
+
 
     }
 
@@ -64,11 +66,10 @@ public class Register extends AppCompatActivity {
                         progressBar.setVisibility(View.GONE);
                         if (task.isSuccessful()) {
                             User user1 = new User();
-                            pseudo = username.getText().toString();
-                            user1.setUsername(pseudo);
-                            UserRef = FirebaseDatabase.getInstance("https://mangas-a1043-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("Acccount");
-                            UserRef.push().setValue(user1);
+
                             Toast.makeText(Register.this, "Account created.", Toast.LENGTH_SHORT).show();
+                            Intent myIntent = new Intent(Register.this, Login.class);
+                            startActivity(myIntent);
                         } else {
                             Toast.makeText(Register.this, "Authentication failed. Veuillez verfier vos informations", Toast.LENGTH_SHORT).show();
                         }

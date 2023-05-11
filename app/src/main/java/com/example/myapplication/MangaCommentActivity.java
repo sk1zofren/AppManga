@@ -99,7 +99,9 @@ public class MangaCommentActivity extends AppCompatActivity {
                     intent.putExtra("manga_title", mangaTitle);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-                    PendingIntent pendingIntent = PendingIntent.getActivity(MangaCommentActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(MangaCommentActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
+
+
 
                     RemoteInput remoteInput = new RemoteInput.Builder(CommentBroadcastReceiver.KEY_COMMENT_REPLY)
                             .setLabel("Add a comment")
@@ -107,7 +109,9 @@ public class MangaCommentActivity extends AppCompatActivity {
 
                     Intent replyIntent = new Intent(MangaCommentActivity.this, CommentBroadcastReceiver.class);
                     replyIntent.putExtra("manga_title", mangaTitle);
-                    PendingIntent replyPendingIntent = PendingIntent.getBroadcast(MangaCommentActivity.this, 0, replyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent replyPendingIntent = PendingIntent.getBroadcast(MangaCommentActivity.this, 0, replyIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
+
+
                     NotificationCompat.Action replyAction = new NotificationCompat.Action.Builder(R.drawable.a_j, "Reply", replyPendingIntent)
                             .addRemoteInput(remoteInput)
                             .build();
@@ -135,6 +139,8 @@ public class MangaCommentActivity extends AppCompatActivity {
     }
 
 
+
+
     private void fetchComments() {
         commentsRef.orderByChild("timestamp").addValueEventListener(new ValueEventListener() {
             @Override
@@ -153,7 +159,6 @@ public class MangaCommentActivity extends AppCompatActivity {
             }
         });
     }
-
     public void addComment(View view) {
         String commentText = commentEditText.getText().toString().trim();
         if (commentText.isEmpty()) {
@@ -178,4 +183,10 @@ public class MangaCommentActivity extends AppCompatActivity {
                     // Handle error
                 });
     }
+
+    public void ToMenu(View view) {
+        Intent myIntent = new Intent(MangaCommentActivity.this, MainActivity.class);
+        startActivity(myIntent);
+    }
+
 }

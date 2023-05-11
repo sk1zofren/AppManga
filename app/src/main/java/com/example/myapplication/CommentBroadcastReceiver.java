@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,6 +39,7 @@ public class CommentBroadcastReceiver extends BroadcastReceiver {
     private FirebaseUser user;
     private ArrayList<Comment> comments;
     private CommentAdapter commentAdapter;
+
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -69,8 +71,13 @@ public class CommentBroadcastReceiver extends BroadcastReceiver {
                     .addOnFailureListener(e -> {
                         // Handle the error, if needed
                     });
+
+            // Cancel the notification
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+            notificationManager.cancel(1);
         }
     }
+
 
     private void fetchComments() {
         commentsRef.orderByChild("timestamp").addValueEventListener(new ValueEventListener() {

@@ -23,7 +23,7 @@ import java.util.List;
 public class TopMangaActivity extends AppCompatActivity {
 
     private ImageView top1ImageView, top2ImageView, top3ImageView;
-    private TextView top1TextView, top2TextView, top3TextView;
+
     private DatabaseReference listFavMangaRef;
 
     private FirebaseAuth mAuth;
@@ -67,18 +67,15 @@ public class TopMangaActivity extends AppCompatActivity {
                         Collections.reverse(topMangas);
 
                         if (topMangas.size() > 0) {
-
-                            Picasso.get().load(topMangas.get(1).getImageUrl()).into(top1ImageView);
+                            Picasso.get().load(topMangas.get(0).getImageUrl()).into(top1ImageView);
                         }
 
                         if (topMangas.size() > 1) {
-
-                            Picasso.get().load(topMangas.get(2).getImageUrl()).into(top2ImageView);
+                            Picasso.get().load(topMangas.get(1).getImageUrl()).into(top2ImageView);
                         }
 
                         if (topMangas.size() > 2) {
-
-                            Picasso.get().load(topMangas.get(0).getImageUrl()).into(top3ImageView);
+                            Picasso.get().load(topMangas.get(2).getImageUrl()).into(top3ImageView);
                         }
                     }
 
@@ -88,4 +85,5 @@ public class TopMangaActivity extends AppCompatActivity {
                     }
                 });
     }
+
 }

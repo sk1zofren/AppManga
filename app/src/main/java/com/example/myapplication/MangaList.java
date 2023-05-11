@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -49,6 +50,7 @@ public class MangaList extends AppCompatActivity {
 
     DatabaseReference UserRef;
     private FirebaseUser user;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,72 +118,79 @@ public class MangaList extends AppCompatActivity {
             }
         });
 
-        builder.setNeutralButton("Commenter", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Intent intent = new Intent(MangaList.this, MangaCommentActivity.class);
-                intent.putExtra("manga_title", manga.getTitle());
-                startActivity(intent);
-            }
-        });
-        builder.setNegativeButton("Add Fav", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                DatabaseReference listFavMangaRef = FirebaseDatabase.getInstance("https://mangas-a1043.europe-west1.firebasedatabase.app/")
-                        .getReference()
-                        .child("listFavManga")
-                        .child(user.getUid());
+        if (user == null) {
+            // User is not logged in, show error message
+            builder.setNeutralButton("Commenter", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Toast.makeText(MangaList.this, "Vous devez vous connecter pour commenter", Toast.LENGTH_SHORT).show();
+                }
+            });
+            builder.setNegativeButton("Add Fav", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Toast.makeText(MangaList.this, "Vous devez vous connecter pour ajouter aux favoris", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            // User is logged in, allow commenting and adding to favorites
+            builder.setNeutralButton("Commenter", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Intent intent = new Intent(MangaList.this, MangaCommentActivity.class);
+                    intent.putExtra("manga_title", manga.getTitle());
+                    startActivity(intent);
+                }
+            });
+            builder.setNegativeButton("Add Fav", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    DatabaseReference listFavMangaRef = FirebaseDatabase.getInstance("https://mangas-a1043.europe-west1.firebasedatabase.app/")
+                            .getReference()
+                            .child("listFavManga")
+                            .child(user.getUid());
 
+                    // Check if manga is already in the user's list of favorite mangas
+                    Query query = listFavMangaRef.orderByChild("title").equalTo(manga.getTitle());
+                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                // Manga is already in the user's list of favorite mangas, show error message
+                                Toast.makeText(MangaList.this, "Ce manga est déjà dans votre liste de favoris.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                // Manga is not in the user's list of favorite mangas, add it
+                                DatabaseReference newFavMangaRef = listFavMangaRef.push();
+                                HashMap<String, Object> mangaData = new HashMap<>();
+                                mangaData.put("title", manga.getTitle());
+                                mangaData.put("imageUrl", manga.getImageUrl());
+                                mangaData.put("fav", 1); // Initialize the fav count to 1
 
-                Query query = listFavMangaRef.orderByChild("title").equalTo(manga.getTitle());
-                query.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                                Integer currentFav = childSnapshot.child("fav").getValue(Integer.class);
-                                if (currentFav == null) {
-                                    currentFav = 0;
-                                }
-                                int newFavCount = currentFav + 1;
-                                childSnapshot.getRef().child("fav").setValue(newFavCount);
+                                newFavMangaRef.setValue(mangaData);
 
                                 // Update the Manga object's fav value
-                                manga.setFav(newFavCount);
+                                manga.setFav(1);
 
+                                Toast.makeText(MangaList.this, "Manga ajouté à votre liste de favoris.", Toast.LENGTH_SHORT).show();
                             }
-                        } else {
-                            DatabaseReference newFavMangaRef = listFavMangaRef.push();
-                            HashMap<String, Object> mangaData = new HashMap<>();
-                            mangaData.put("title", manga.getTitle());
-                            mangaData.put("imageUrl", manga.getImageUrl());
-                            mangaData.put("fav", 1); // Initialize the fav count to 1
-
-                            newFavMangaRef.setValue(mangaData);
-
-                            // Update the Manga object's fav value
-                            manga.setFav(1);
-
                         }
-                    }
 
 
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
+                    });
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                });
+                }
 
-            }
-
-        });
-
-
-        AlertDialog dialog = builder.create();
-          dialog.show();
+            });
 
 
-    }
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+        }
+        }
 
         private class RetrieveMangaListTask extends AsyncTask<Void, Void, String> {
 
@@ -275,4 +284,4 @@ public class MangaList extends AppCompatActivity {
 
         }
 
-}
+    }

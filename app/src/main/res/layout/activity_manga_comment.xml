@@ -6,7 +6,13 @@
     android:layout_height="match_parent"
     android:background="#464442"
     tools:context=".MangaCommentActivity">
-
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Menue"
+    android:onClick="ToMenu"
+    android:backgroundTint="@color/design_default_color_primary"
+    tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/specific_comment_text_view"
