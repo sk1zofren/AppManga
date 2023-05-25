@@ -17,10 +17,6 @@ public class Comment {
     }
 
     // Getters and setters
-
-
-
-
     public String getUserName() {
         return userName;
     }

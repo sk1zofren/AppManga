@@ -15,7 +15,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class Map extends AppCompatActivity implements OnMapReadyCallback  {
+public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
     GoogleMap gMap;
     FrameLayout map;
@@ -24,6 +24,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
+        // Get the map fragment from the layout
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.maps);
         mapFragment.getMapAsync(this);
     }
@@ -32,6 +34,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback  {
     public void onMapReady(@NonNull GoogleMap googleMap) {
         this.gMap = googleMap;
 
+        // Set the markers for different locations
         LatLng mapLouv = new LatLng(50.483055579479846, 4.182554791926987);
         gMap.addMarker(new MarkerOptions().position(mapLouv).title("Winter Geek Festival"));
 
@@ -41,8 +44,10 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback  {
         LatLng mapMIA = new LatLng(50.899750541183735, 4.337251640384408);
         gMap.addMarker(new MarkerOptions().position(mapMIA).title("Made In Asia"));
 
+        // Move the camera to the default location and set zoom level
         gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mapLouv, 10));
 
+        // Set the click listener for info windows of markers
         gMap.setOnInfoWindowClickListener(marker -> {
             String url = "";
             switch (marker.getTitle()) {
@@ -57,6 +62,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback  {
                     break;
             }
             if (!url.isEmpty()) {
+                // Open the URL in a browser
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 startActivity(browserIntent);
             }

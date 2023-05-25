@@ -40,19 +40,19 @@ public class CommentBroadcastReceiver extends BroadcastReceiver {
     private ArrayList<Comment> comments;
     private CommentAdapter commentAdapter;
 
-
     @Override
     public void onReceive(Context context, Intent intent) {
-        Bundle remoteInput = androidx.core.app.RemoteInput.getResultsFromIntent(intent);
+        // Get the comment reply from the remote input
+        Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);
         if (remoteInput != null) {
             String replyText = remoteInput.getCharSequence(KEY_COMMENT_REPLY).toString();
             mAuth = FirebaseAuth.getInstance();
             user = mAuth.getCurrentUser();
             mangaId = intent.getStringExtra("manga_id");
-
             mangaTitle = intent.getStringExtra("manga_title");
-            String userName = user.getEmail(); // Replace this with the actual user's email
+            String userName = user.getEmail();
 
+            // Initialize Firebase database
             database = FirebaseDatabase.getInstance("https://mangas-a1043.europe-west1.firebasedatabase.app/");
             commentsRef = database.getReference("manga_comments").child(mangaTitle).child("comments");
 
@@ -78,7 +78,7 @@ public class CommentBroadcastReceiver extends BroadcastReceiver {
         }
     }
 
-
+    // Fetch comments from Firebase database
     private void fetchComments() {
         commentsRef.orderByChild("timestamp").addValueEventListener(new ValueEventListener() {
             @Override
@@ -97,7 +97,4 @@ public class CommentBroadcastReceiver extends BroadcastReceiver {
             }
         });
     }
-
-
 }
-

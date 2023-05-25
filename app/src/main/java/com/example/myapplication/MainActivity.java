@@ -30,33 +30,30 @@ import com.google.firebase.ktx.Firebase;
 import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
-    EditText MyName;
     private FirebaseAuth auth;
-    private TextView textView;
     private FirebaseUser user;
-    DatabaseReference UserRef;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Initialize Firebase Authentication
         auth = FirebaseAuth.getInstance();
-        //textView = findViewById(R.id.user_details);
         user = auth.getCurrentUser();
 
+        // Check if the user is logged in
         if (user == null) {
+            // If not logged in, redirect to Login activity
             Intent myIntent = new Intent(MainActivity.this, Login.class);
             startActivity(myIntent);
         } else {
-
+            // If logged in, continue with the main activity
+            // You can add code here to customize the behavior for a logged-in user
         }
-        //ici on identifie l'edit Text et on cree le noeud dans la base de donnee
-
-
     }
 
+    // Logout button click event handler
     public void ToLogout(View view) {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mAuth.signOut();
@@ -64,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this, Login.class));
     }
 
+    // Button click event handlers for different activities
     public void ToPrincipalPage(View view) {
         Intent myIntent = new Intent(MainActivity.this, PrincipalPage.class);
         startActivity(myIntent);
@@ -89,21 +87,4 @@ public class MainActivity extends AppCompatActivity {
         startActivity(myIntent);
         finish();
     }
-
-    // method who call the method insertUserData
-
-
-    // method who take the name varibale and put in in the parameter in User instance and push it in the DataBase
-    private void InsertUsersData() {
-/*
-        MyName = findViewById(R.id.name);
-        String name = MyName.getText().toString();
-        User user1 = new User(name);
-        UserRef = FirebaseDatabase.getInstance("https://mangas-a1043-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("Users");
-        UserRef.push().setValue(user1);
-        Toast.makeText(MainActivity.this, "Data Insert", Toast.LENGTH_SHORT).show();
-*/
-    }
-
-
 }

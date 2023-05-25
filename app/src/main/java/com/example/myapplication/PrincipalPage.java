@@ -42,31 +42,46 @@ public class PrincipalPage extends AppCompatActivity {
     private String title;
     private String imageUrl;
 
+    private ScrollView col1ScrollView;
+    private ScrollView col2ScrollView;
+    private ScrollView col3ScrollView;
+    private ScrollView col4ScrollView;
+    private ScrollView col5ScrollView;
+    private ScrollView col6ScrollView;
 
+    private LinearLayout col1Container;
+    private LinearLayout col2Container;
+    private LinearLayout col3Container;
+    private LinearLayout col4Container;
+    private LinearLayout col5Container;
+    private LinearLayout col6Container;
+
+    private static final String TAG = "PrincipalPage";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal_page);
+
+        // Initialize Firebase authentication and retrieve the current user
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        // Retrieve the HorizontalScrollView containers
-        ScrollView col1ScrollView = findViewById(R.id.col1_container);
-        ScrollView col2ScrollView = findViewById(R.id.col2_container);
-        ScrollView col3ScrollView = findViewById(R.id.col3_container);
-        ScrollView col4ScrollView = findViewById(R.id.col4_container);
-        ScrollView col5ScrollView = findViewById(R.id.col5_container);
-        ScrollView col6ScrollView = findViewById(R.id.col6_container);
+        // Retrieve the ScrollView containers
+        col1ScrollView = findViewById(R.id.col1_container);
+        col2ScrollView = findViewById(R.id.col2_container);
+        col3ScrollView = findViewById(R.id.col3_container);
+        col4ScrollView = findViewById(R.id.col4_container);
+        col5ScrollView = findViewById(R.id.col5_container);
+        col6ScrollView = findViewById(R.id.col6_container);
 
-        // Retrieve the LinearLayouts inside the HorizontalScrollView containers
-        LinearLayout col1Container = col1ScrollView.findViewById(R.id.col1_linear_layout);
-        LinearLayout col2Container = col2ScrollView.findViewById(R.id.col2_linear_layout);
-        LinearLayout col3Container = col3ScrollView.findViewById(R.id.col3_linear_layout);
-        LinearLayout col4Container = col4ScrollView.findViewById(R.id.col4_linear_layout);
-        LinearLayout col5Container = col5ScrollView.findViewById(R.id.col5_linear_layout);
-        LinearLayout col6Container = col6ScrollView.findViewById(R.id.col6_linear_layout);
-
+        // Retrieve the LinearLayouts inside the ScrollView containers
+        col1Container = col1ScrollView.findViewById(R.id.col1_linear_layout);
+        col2Container = col2ScrollView.findViewById(R.id.col2_linear_layout);
+        col3Container = col3ScrollView.findViewById(R.id.col3_linear_layout);
+        col4Container = col4ScrollView.findViewById(R.id.col4_linear_layout);
+        col5Container = col5ScrollView.findViewById(R.id.col5_linear_layout);
+        col6Container = col6ScrollView.findViewById(R.id.col6_linear_layout);
 
         // Initialize the drag and drop listeners for each LinearLayout
         initializeDragAndDropListeners(col1Container);
@@ -76,60 +91,58 @@ public class PrincipalPage extends AppCompatActivity {
         initializeDragAndDropListeners(col5Container);
         initializeDragAndDropListeners(col6Container);
 
-        // Retrieve the database reference
+        // Check if the user is logged in and retrieve the database reference
         if (currentUser != null) {
             mangasRef = FirebaseDatabase.getInstance("https://mangas-a1043.europe-west1.firebasedatabase.app/")
                     .getReference("listFavManga")
                     .child(currentUser.getUid());
         } else {
-            // Gérer le cas où l'utilisateur n'est pas connecté, par exemple en affichant un message
+            // Handle the case when the user is not logged in, for example, by displaying a message
         }
 
         // Create a new ArrayList to store favorite mangas
-        ArrayList<Manga> favMangaList = new ArrayList<>();
+        favMangaList = new ArrayList<>();
 
         // Set up ChildEventListener for database reference
         mangasRef.addChildEventListener(new ChildEventListener() {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, String previousChildName) {
-                // Ne rien faire si vous n'avez pas besoin de gérer cet événement
+                // Do nothing if you don't need to handle this event
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                //...
+
             }
 
             @Override
             public void onChildMoved(@NonNull DataSnapshot snapshot, String previousChildName) {
-                //...
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                //...
+
             }
-
-            @SuppressLint("RestrictedApi")
-
 
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, String previousChildName) {
                 if (snapshot.getValue() instanceof HashMap) {
-                    // Récupérer les données de l'enfant sous forme d'objet HashMap
+                    // Retrieve data of the child as a HashMap object
                     HashMap<String, String> mangaData = (HashMap<String, String>) snapshot.getValue();
 
-                    // Créer un nouvel objet Manga à partir des données récupérées
+                    // Create a new Manga object from the retrieved data
                     String title = mangaData.get("title");
                     String imageUrl = mangaData.get("imageUrl");
 
                     Manga manga = new Manga(title);
-                    manga.setImageUrl(imageUrl); // Assigner l'URL de l'image à l'objet Manga
+                    manga.setImageUrl(imageUrl); // Assign the image URL to the Manga object
 
-                    // Ajouter l'objet Manga à la liste
+                    // Add the Manga object to the list
                     favMangaList.add(manga);
 
+                    // Create an ImageView for the manga image
                     ImageView imageView = new ImageView(PrincipalPage.this);
                     imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                     imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
@@ -141,7 +154,7 @@ public class PrincipalPage extends AppCompatActivity {
                             .into(imageView);
                     imageView.setOnTouchListener(new ImageTouchListener());
 
-                    // Trouver le conteneur avec le moins d'images et ajouter l'ImageView
+                    // Find the container with the fewest images and add the ImageView
                     LinearLayout smallestContainer = col1Container;
                     int smallestChildCount = col1Container.getChildCount();
 
@@ -157,12 +170,11 @@ public class PrincipalPage extends AppCompatActivity {
                     // Log an error if the data is not stored as a HashMap
                     Log.e(TAG, "Unexpected data type: ");
                 }
-
-                                        }
-
-            // ...
+            }
         });
     }
+
+    // Inner class for handling touch events on the manga images
     private class ImageTouchListener implements View.OnTouchListener {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -170,6 +182,7 @@ public class PrincipalPage extends AppCompatActivity {
                 ImageView imageView = (ImageView) view;
                 String imageUrl = (String) imageView.getTag();
 
+                // Create a ClipData object with the image URL as plain text
                 ClipData data = ClipData.newPlainText("imageUrl", imageUrl);
                 View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
                 view.startDragAndDrop(data, shadowBuilder, view, 0);
@@ -180,6 +193,7 @@ public class PrincipalPage extends AppCompatActivity {
         }
     }
 
+    // Method to initialize drag and drop listeners for the containers
     private void initializeDragAndDropListeners(LinearLayout container) {
         container.setOnDragListener(new View.OnDragListener() {
             @Override
@@ -198,25 +212,25 @@ public class PrincipalPage extends AppCompatActivity {
                         ClipData.Item item = event.getClipData().getItemAt(0);
                         String imageUrl = item.getText().toString();
 
+                        // Create an ImageView for the dropped image
                         ImageView imageView = new ImageView(PrincipalPage.this);
                         imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                         imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
                         imageView.setTag(imageUrl);
                         Glide.with(PrincipalPage.this)
-                                .load(imageUrl).override(140, 150)
+                                .load(imageUrl)
+                                .override(140, 150)
                                 .apply(RequestOptions.bitmapTransform(new Rotate(270)))
                                 .into(imageView);
                         imageView.setOnTouchListener(new ImageTouchListener());
 
                         LinearLayout targetContainer = (LinearLayout) v;
-                        // Ajout de la ligne suivante
                         targetContainer.setMinimumWidth(dpToPx(105));
 
                         View draggedView = (View) event.getLocalState();
                         ViewGroup sourceContainer = (ViewGroup) draggedView.getParent();
                         sourceContainer.removeView(draggedView);
 
-                        // Modification ici : Ajout de l'image à côté de l'image déjà présente
                         boolean isImageAdded = false;
                         for (int i = 0; i < targetContainer.getChildCount(); i++) {
                             View child = targetContainer.getChildAt(i);
@@ -244,12 +258,11 @@ public class PrincipalPage extends AppCompatActivity {
         });
     }
 
-
-    // Méthode pour convertir les dp en pixels
+    // Method to convert dp to pixels
     private int dpToPx(int dp) {
         float density = getResources().getDisplayMetrics().density;
         return Math.round(dp * density);
     }
-
 }
+
 

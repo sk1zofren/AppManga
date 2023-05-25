@@ -28,56 +28,64 @@ public class Register extends AppCompatActivity {
     TextView textView;
     public static String pseudo;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        // Initialize Firebase
         mAuth = FirebaseAuth.getInstance();
+        UserRef = FirebaseDatabase.getInstance().getReference().child("users");
+
+        // Initialize views
         editTextEmail = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
         progressBar = findViewById(R.id.progressBar);
         textView = findViewById(R.id.loginNow);
-
-
-
     }
 
-    public void GoRegister(View view){
+    // Handle registration button click
+    public void GoRegister(View view) {
         progressBar.setVisibility(View.VISIBLE);
-        String email, password;
-        email = String.valueOf(editTextEmail.getText());
-        password = String.valueOf(editTextPassword.getText());
 
-        if (TextUtils.isEmpty(email)){
+        // Get email and password from input fields
+        String email = editTextEmail.getText().toString().trim();
+        String password = editTextPassword.getText().toString().trim();
+
+        // Validate input fields
+        if (TextUtils.isEmpty(email)) {
             Toast.makeText(Register.this, "Enter email", Toast.LENGTH_SHORT).show();
+            progressBar.setVisibility(View.GONE);
             return;
         }
 
-        if (TextUtils.isEmpty(password)){
+        if (TextUtils.isEmpty(password)) {
             Toast.makeText(Register.this, "Enter password", Toast.LENGTH_SHORT).show();
+            progressBar.setVisibility(View.GONE);
             return;
         }
 
+        // Create user with email and password
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(Register.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         progressBar.setVisibility(View.GONE);
                         if (task.isSuccessful()) {
-                            User user1 = new User();
-
+                            // Registration successful
                             Toast.makeText(Register.this, "Account created.", Toast.LENGTH_SHORT).show();
-                            Intent myIntent = new Intent(Register.this, Login.class);
-                            startActivity(myIntent);
+                            // Automatically log in the user and redirect to the main menu
+                            loginUser(email, password);
                         } else {
-                            Toast.makeText(Register.this, "Authentication failed. Veuillez verfier vos informations", Toast.LENGTH_SHORT).show();
+                            // Registration failed
+                            Toast.makeText(Register.this, "Authentication failed. Please check your information.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
 
-    public void ToLoginPage(View view){
+    // Handle "Login Now" button click to go to login page
+    public void ToLoginPage(View view) {
         Intent myIntent = new Intent(Register.this, Login.class);
         startActivity(myIntent);
     }
@@ -85,11 +93,31 @@ public class Register extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        // Check if user is already logged in
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             Toast.makeText(getApplicationContext(), "Login Success", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
         }
+    }
+
+    // Log in the user with email and password and redirect to the main menu
+    private void loginUser(String email, String password) {
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(Register.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Login successful
+                            Toast.makeText(Register.this, "Login Success", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                        } else {
+                            // Login failed
+                            Toast.makeText(Register.this, "Login Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 }

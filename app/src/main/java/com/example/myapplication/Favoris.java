@@ -21,96 +21,89 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Favoris extends AppCompatActivity {
-
     private FirebaseAuth mAuth;
-
     private DatabaseReference mangasRef;
     private ArrayList<Manga> favMangaList;
     private MangaAdapter adapter;
-    public String title;
-    public String imageUrl;
-    public ListView titleManga;
-
     private FirebaseUser user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favoris);
+
+        // Initialize Firebase Authentication
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         System.out.println(user.getUid());
 
-        // Récupérer la référence de la base de données
+        // Get the reference to the database
         mangasRef = FirebaseDatabase.getInstance("https://mangas-a1043.europe-west1.firebasedatabase.app/")
                 .getReference("listFavManga")
                 .child(user.getUid());
 
-        // Créer une nouvelle ArrayList pour stocker les mangas favoris
+        // Create a new ArrayList to store favorite mangas
         favMangaList = new ArrayList<>();
-        // Créer un nouvel adaptateur pour le ListView
+        // Create a new adapter for the ListView
         adapter = new MangaAdapter(this, R.layout.list_item_manga, favMangaList);
 
-        // Récupérer le ListView et le lier à l'adaptateur
+        // Get the ListView and bind it with the adapter
         ListView listView = findViewById(R.id.manga_list_view);
         listView.setAdapter(adapter);
 
-        // Ajouter un ChildEventListener à la référence de la base de données pour récupérer les données
+        // Add a ChildEventListener to the database reference to retrieve data
         mangasRef.addChildEventListener(new ChildEventListener() {
-
-
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, String previousChildName) {
                 if (snapshot.getValue() instanceof HashMap) {
-                    // Récupérer les données de l'enfant sous forme d'objet HashMap
+                    // Retrieve the child data as a HashMap object
                     HashMap<String, String> mangaData = (HashMap<String, String>) snapshot.getValue();
 
-                    // Créer un nouvel objet Manga à partir des données récupérées
+                    // Create a new Manga object from the retrieved data
                     String title = mangaData.get("title");
                     String imageUrl = mangaData.get("imageUrl");
 
                     Manga manga = new Manga(title);
-                    manga.setImageUrl(imageUrl); // Assigner l'URL de l'image à l'objet Manga
+                    manga.setImageUrl(imageUrl); // Set the image URL for the Manga object
 
-                    // Ajouter l'objet Manga à la liste
+                    // Add the Manga object to the list
                     favMangaList.add(manga);
 
-                    // Notifier l'adaptateur que les données ont changé
+                    // Notify the adapter that the data has changed
                     adapter.notifyDataSetChanged();
                 } else {
-                    Log.e("Favoris", "Les données ne sont pas stockées sous forme de HashMap");
+                    Log.e("Favoris", "Data is not stored as a HashMap");
                 }
             }
 
-
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, String previousChildName) {
-                // Rien à faire ici
+                // Nothing to do here
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                 Manga manga = snapshot.getValue(Manga.class);
                 if (manga != null) {
-                    // Supprimer l'objet Manga de la liste
+                    // Remove the Manga object from the list
                     favMangaList.remove(manga);
 
-                    // Notifier l'adaptateur que les données ont changé
+                    // Notify the adapter that the data has changed
                     adapter.notifyDataSetChanged();
                 } else {
-                    Log.e("Favoris", "Erreur lors de la récupération des données du manga");
+                    Log.e("Favoris", "Failed to retrieve manga data");
                 }
             }
 
             @Override
             public void onChildMoved(@NonNull DataSnapshot snapshot, String previousChildName) {
-                // Rien à faire ici
+                // Nothing to do here
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("Favoris", "Erreur de lecture de la base de données: " + error.getMessage());
+                Log.e("Favoris", "Failed to read database: " + error.getMessage());
             }
         });
     }
-
 }
