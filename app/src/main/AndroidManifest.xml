@@ -16,7 +16,8 @@
         tools:targetApi="31">
         <activity
             android:name=".TopMangaActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
 
         <receiver android:name=".CommentBroadcastReceiver" />
 
@@ -44,7 +45,8 @@
             android:theme="@style/NoActionBar" />
         <activity
             android:name=".PrincipalPage"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Register"
             android:exported="false"
@@ -55,7 +57,8 @@
             android:theme="@style/Theme.Material3.Light.NoActionBar" /> <!-- dans theme je peux choisir mon theme qui a été fais dans le fichier theme.xml -->
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
